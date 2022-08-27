@@ -1,7 +1,6 @@
 #
 
 def encryption():
-    alfavit_EU = 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ'
     for i in range(10): # 10 попыток првильно ввести правильно число
         away=int(input("Расшифрование (1), Шифрование(2) : "))
         if away!=1 and away!=2:
@@ -9,20 +8,30 @@ def encryption():
         else:
             break
     if away == 2:
-        way=int(input("Способ шифрования:  Посимвольно(1) ,Блоками(2) ,Пословно(3):"))
+        way=int(input("Способ шифрования:  Блоками(1) ,Посимвольно(2) ,Пословно(3):"))
         if way==1:
-            smeshenie_1 = int(input('Шаг шифровки: '))
-            message_1 = input("Сообщение для шифровки: ").upper()
-            itog_1 = ''
-            for i in message_1:
-                mesto = alfavit_EU.find(i)
-                new_mesto = mesto + smeshenie_1
-                if i in alfavit_EU:
-                    itog_1 += alfavit_EU[new_mesto]
-                else:
-                    itog_1 += i
-            print ("Сообщение после шифрования: ")
-            print (itog_1.lower())
+            smeshenie_1 = input('Введите ключ шифровки   ')
+            dlina = int(input("Введите длину блока "))
+            message_1 = input("Сообщение для шифровки: ")
+            while len(message_1)%(len(smeshenie_1)*dlina)!=0:
+                message_1=message_1+"/"
+
+            itog_1=""
+            r = ""  # вспомогательные элементы
+            reverse_1 = [0] * len(smeshenie_1)
+            for i in range(len(smeshenie_1)):
+                r = r + str(i)
+            for i in range(len(smeshenie_1)):
+                reverse_1[int(smeshenie_1[i])] = r[i]
+
+            for i in range (len(message_1)//(len(smeshenie_1)*dlina)):
+                for j in range(len(smeshenie_1)):
+                    for k in range(dlina):
+                        itog_1=itog_1 +message_1[i*len(smeshenie_1)*dlina + int(reverse_1[j])*dlina+k]
+            print("Сообщение после шифрования: ")
+            itog_1=itog_1.replace("/","  ")
+            print(itog_1)
+
         elif way==2:
             block=int(input("Введите количество элементов в одном блоке : "))
             for l in range (10):
@@ -44,7 +53,7 @@ def encryption():
                 else:
                     continue
             if len(message_2) % block !=0:
-                for i in range(block - len(message_2) % block) :
+                for i in range(block - len(message_2) % block):
                     message_2=message_2+"\0"
             itog_2=""
             for i in range (len(message_2)//block):
@@ -87,20 +96,21 @@ def encryption():
             print("Сообщение после шифрования: ")
             print(itog_3)
     if away==1:
-        way = int(input("Способ расшифрования:  Посимвольно(1) ,Блоками(2) ,Пословно(3): "))
+        way = int(input("Способ расшифрования: Блочно (1) ,Посимвольно(2) ,Пословно(3): "))
         if way == 1:
-            smeshenie_1 = int(input('Шаг расшифровки: '))
-            message_1 = input("Сообщение для расшифровки: ").upper()
-            itog_1 = ''
-            for i in message_1:
-                mesto = alfavit_EU.find(i)
-                new_mesto = mesto - smeshenie_1
-                if i in alfavit_EU:
-                    itog_1 += alfavit_EU[new_mesto]
-                else:
-                    itog_1 += i
-            print("Сообщение после расшифрования: ")
-            print(itog_1.lower())
+            smeshenie_1 = input('Введите ключ шифровки   ')
+            dlina = int(input("Введите длину блока "))
+            message_1 = input("Сообщение для расшифровки: ")
+            message_1 = message_1.replace("  ", "/")
+            itog_1 = ""
+            for i in range(len(message_1) // (len(smeshenie_1) * dlina)):
+                for j in range(len(smeshenie_1)):
+                    for k in range(dlina):
+                        itog_1 = itog_1 + message_1[i * len(smeshenie_1) * dlina + int(smeshenie_1[j]) * dlina + k]
+            print("Сообщение после шифрования: ")
+            itog_1 = itog_1.replace("/", "")
+            print(itog_1)
+
         elif way==2:
             block=int(input("Введите количество элементов в одном блоке : "))
             for l in range (10):# 10 попыток првильно ввести правильно число ( ключ расшифровки)
@@ -138,7 +148,7 @@ def encryption():
         if way==3:
             block_3=int(input("Введите количество слов в одном блоке: "))
             for i in range(10):
-                smeshenie_3 = input("Введите ключ шифрования:  ")
+                smeshenie_3 = input("Введите ключ расшифрования:  ")
                 if len(smeshenie_3) != block_3:
                     print("Вы ввели неправильный ключ , попробуйте заново ... ")
                     continue
