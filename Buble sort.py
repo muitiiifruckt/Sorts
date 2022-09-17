@@ -3,7 +3,7 @@ from random import randint # библиотека чтобы заполнить 
 N = 10
 a = []
 for i in range(N):
-    a.append(randint(1, 99))
+    a.append(randint(1, 99)) #заполняем массив
 print(a)
 
 for i in range(N - 1):
